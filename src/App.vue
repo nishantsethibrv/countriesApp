@@ -1,26 +1,34 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <CountriesListing :countries="countries"/>
+  <AddNewCountry @countryAdded="fetchCountries"/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import CountriesListing from './components/CountriesListing.vue';
+import AddNewCountry from './components/AddNewCountry.vue';
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    CountriesListing,
+    AddNewCountry
+  },
+  data() {
+    return {
+      countries: []
+    };
+  },
+  methods: {
+    async fetchCountries() {
+      const response = await fetch("http://localhost:8080/countries");
+      this.countries = await response.json();
+    }
+  },
+  created() {
+    this.fetchCountries();
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
